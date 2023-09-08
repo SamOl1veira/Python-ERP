@@ -33,6 +33,7 @@ def logCasdastro():
                 elif l['nivel']==2:
                     usuarioMestre=True
                 autenticado=True
+                break
             else:
                 autenticado=False
         if not autenticado:
@@ -59,7 +60,21 @@ def logCasdastro():
                 print("Erro ao inserir os dados no banco.")
     return autenticado, usuarioMestre
 
-
+def cadastrarProdutos():
+    nome=input("Digite o nome do produto\n")
+    ingredientes=input("Digite os ingredientes do produto\n")
+    grupo=input("Digite a que grupo pertecen este produto\n")
+    preco=float(input("Digite o preço do produto\n"))
+    try:
+        with conexao.cursor() as cursor:
+            cursor.execute('insert into produtos '
+                           '(nome, ingredientes, grupo, preco)'
+                           'values (%s,%s,%s,%s)',
+                           (nome, ingredientes, grupo, preco))
+            conexao.commit()
+            print("Produto cadastrado com sucesso!")
+    except:
+        print("Não foi possivel inserir o produto no banco de dados")
 
 
 autentico=False
@@ -75,3 +90,12 @@ while not autentico:
         print("Erro ao conectar no banco de dados")
 
     autentico, usuarioSupremo = logCasdastro()
+
+if autentico:
+    print("\nAutenticado!\n")
+    if usuarioSupremo == True:
+        decisaousuario=1
+        while decisaousuario!=0:
+            decisaousuario=int(input("digite 0 para sair, 1 para cadastrar produtos\n"))
+            if decisaousuario==1:
+                cadastrarProdutos()
