@@ -76,6 +76,39 @@ def cadastrarProdutos():
     except:
         print("Não foi possivel inserir o produto no banco de dados")
 
+def cadastrarPedido():
+    listarProduto()
+    idPedido = input("Digite o id do produto pedido\n")
+    localEntrega=input("Digite o local de entrega do pedido\n")
+    observacoesPedido=input("Digite as observações do pedido\n")
+    try:
+        with conexao.cursor() as cursor:
+            cursor.execute("select nome from produtos where id={}".format(idPedido))
+            nomePedido=cursor.fetchone()
+            nome=nomePedido['nome']
+
+            cursor.execute("select ingredientes from produtos where id={}".format(idPedido))
+            ingredientesPedido=cursor.fetchone()
+            ingredientes=ingredientesPedido['ingredientes']
+
+            cursor.execute("select grupo from produtos where id={}".format(idPedido))
+            grupoPedido=cursor.fetchone()
+            grupo=grupoPedido['grupo']
+
+    except:
+        print("erro ao pegar as variaveis do pedido.")
+    try:
+        with conexao.cursor() as cursor:
+            cursor.execute('insert into pedidos '
+                           '(nome, ingredientes, grupo, localEntrega, observacoes)'
+                           'values (%s,%s,%s,%s,%s)',
+                           (nome,
+                            ingredientes, grupo,localEntrega,observacoesPedido))
+            conexao.commit()
+            print("Pedido cadastrado com sucesso!")
+    except:
+        print("Não foi possivel inserir o pedido no banco de dados")
+
 def listarProduto():
     produtos=[]
 
@@ -124,14 +157,14 @@ def listarPedidos():
                 print(pedidos[i])
         else:
             print("nenhum pedido encontrado")
-        decisao=int(input("digite 1 registrar um pedido e 2 para voltar\n"))
+        decisao=int(input("digite 1 para das um pedido como entregue e 2 para voltar\n"))
 
         if decisao == 1:
-            idPedir=int(input("digite o id do produto pedido\n"))
+            idPedir=int(input("digite o id do pedido entregue\n"))
             try:
                 with conexao.cursor() as cursor:
                     cursor.execute("delete from pedidos where id = {}".format(idPedir))
-                    print("pedido feito")
+                    print("pedido entregue!")
             except:
                 print("erro ao acessar o banco de dados\n")
 
@@ -155,7 +188,7 @@ if autentico:
         decisaousuario=1
         while decisaousuario!=0:
             decisaousuario=int(input("digite 0 para sair, 1 para cadastrar produtos, \n"
-                                     "2 para listar produtos, 3 para listar os pedidos\n"))
+                                     "2 para listar produtos, 3 para listar os pedidos, 4 para fazer um pedido\n"))
             if decisaousuario==1:
                 cadastrarProdutos()
             elif decisaousuario==2:
@@ -165,3 +198,5 @@ if autentico:
                     excluirProduto()
             elif decisaousuario==3:
                 listarPedidos()
+            elif decisaousuario==4:
+                cadastrarPedido()
