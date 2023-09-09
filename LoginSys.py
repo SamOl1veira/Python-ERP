@@ -76,6 +76,64 @@ def cadastrarProdutos():
     except:
         print("Não foi possivel inserir o produto no banco de dados")
 
+def listarProduto():
+    produtos=[]
+
+    try:
+        with conexao.cursor() as cursor:
+            cursor.execute("select * from produtos")
+            produtosCadastrados=cursor.fetchall()
+
+    except:
+        print("Erro ao fazer consulta no banco de dados")
+
+    for i in produtosCadastrados:
+        produtos.append(i)
+
+    if len(produtos)!=0:
+        for i in range(0, len(produtos)):
+            print(produtos[i])
+    else:
+        print("Produto não encontrado")
+
+def excluirProduto():
+    idDeletar=int(input("digite o id do produto a ser apagado\n"))
+    try:
+        with conexao.cursor() as cursor:
+            cursor.execute("delete from produtos where id = {}".format(idDeletar))
+
+    except:
+        print("erro ao excluir produto")
+
+def listarPedidos():
+    pedidos=[]
+    decisao=0
+    while decisao!=2:
+        pedidos.clear()
+        try:
+            with conexao.cursor() as cursor:
+                cursor.execute("select * from pedidos")
+                listaPedidos=cursor.fetchall()
+        except:
+            print("erro no banco de dados\n")
+
+        for i in listaPedidos:
+            pedidos.append(i)
+        if len(pedidos)!=0:
+            for i in range(0, len(pedidos)):
+                print(pedidos[i])
+        else:
+            print("nenhum pedido encontrado")
+        decisao=int(input("digite 1 registrar um pedido e 2 para voltar\n"))
+
+        if decisao == 1:
+            idPedir=int(input("digite o id do produto pedido\n"))
+            try:
+                with conexao.cursor() as cursor:
+                    cursor.execute("delete from pedidos where id = {}".format(idPedir))
+                    print("pedido feito")
+            except:
+                print("erro ao acessar o banco de dados\n")
 
 autentico=False
 while not autentico:
@@ -96,6 +154,14 @@ if autentico:
     if usuarioSupremo == True:
         decisaousuario=1
         while decisaousuario!=0:
-            decisaousuario=int(input("digite 0 para sair, 1 para cadastrar produtos\n"))
+            decisaousuario=int(input("digite 0 para sair, 1 para cadastrar produtos, \n"
+                                     "2 para listar produtos, 3 para listar os pedidos\n"))
             if decisaousuario==1:
                 cadastrarProdutos()
+            elif decisaousuario==2:
+                listarProduto()
+                delete=int(input("digite 1 para excluir um produto e 2 para sair"))
+                if delete==1:
+                    excluirProduto()
+            elif decisaousuario==3:
+                listarPedidos()
