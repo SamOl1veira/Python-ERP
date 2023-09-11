@@ -6,3 +6,7 @@ diferentes módulos e a Orientação a Abjetos, como fiz no meu projeto em java 
 O banco de dados também foi simplificado por este motivo, é percepitivel que o código amarra a ligação entre Produtos e Pedidos
 Algo que poderia ser feito com uma melhor modelagem, com um diagrama de classes e bancos de dados, mas novamente, o foco aqui é fornercer um modelo básico de
 operações com o banco de dados, Python/Mysql
+
+*Dummie Banco de Dados*
+
+Caso queira ver ou usar o mesmo banco de dados que eu usei neste projeto, rode os comandos em sql contidos em /dummiebancodedados
