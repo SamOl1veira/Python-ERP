@@ -168,6 +168,43 @@ def listarPedidos():
             except:
                 print("erro ao acessar o banco de dados\n")
 
+def grafEstatistica():
+    nomeProdutos=[]
+    nomeProdutos.clear()
+    try:
+        with conexao.cursor() as cursor:
+            cursor.execute("slect * from produtos")
+            produtos=cursor.fetchall()
+    except:
+        print("erro ao fazer consulta no banco de dados!")
+    try:
+        with conexao.cursor() as cursor:
+            cursor.execute("select * from estatisticaVendido")
+            vendido=cursor.fetchall()
+    except:
+        print("erro ao fazer a consulta no banco de dados")
+    estado=int(input("\nDigite 0 para sair. 1 Para pesquisar por nome. 2 para pesquisar por grupo.\n"))
+    if estado == 1:
+        decisao3=int(input("\nDigite 1 para pesquisar por dinheiro e 2 para pesquisar por quantidade unitaria\n"))
+        if decisao3==1:
+            for i in produtos:
+                nomeProdutos.append(i['nome'])
+            valores=[]
+            valores.clear()
+
+            for h in range(0, len(nomeProdutos)):
+                somaValor=-1
+                for i in vendido:
+                    if i['nome'] == nomeProdutos[h]:
+                        somaValor+= i['preco']
+                if somaValor == -1:
+                    valores.append(0)
+                elif somaValor>0:
+                    valores.append(somaValor+1)
+
+
+
+
 autentico=False
 while not autentico:
     decisao=int(input("digite 1 para logar e 2 para cadastrar \n"))
