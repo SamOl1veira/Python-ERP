@@ -1,5 +1,5 @@
 # Sistema-Pizzaria-Python
-Simulação Básica de um sistema para automatizar o fluxo de ações em uma pizzaria
+Simulação Básica de um sistema para automatizar o fluxo de ações em uma pizzaria (um mini ERP)
 O objetivo principal é criar todo o modelo básico da backend de interação do programa com o banco de dados (DOA)
 Me limitei aqui, por motivos do projeto ter apenas objetivos demonstrativos e ser relativamente simples, a não utilizar
 diferentes módulos e a Orientação a Abjetos, como fiz no meu projeto em java (organizer).
